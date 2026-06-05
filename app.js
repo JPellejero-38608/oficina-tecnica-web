@@ -2,22 +2,19 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Middleware obligatorio para entender los datos JSON de los POST
 app.use(express.json());
 
-// 1. LE MAQUILLAMOS LA PRIORIDAD: Primero le decimos a Express dónde están los archivos físicos
 app.use(express.static('public'));
 
-// El carrito en memoria de la Oficina Técnica
+// carrito 
 let carrito = [];
 
-// 2. EL CAMBIO SEGURO: Usamos la ruta raíz directamente apuntando al archivo sin intermediarios
 app.get('/', function (req, res) {
-    // Mandamos el archivo real servicios.html que está en la carpeta public
+    //  servicios.html  public
     res.sendFile(path.join(__dirname, 'public', 'servicios.html'));
 });
 
-// Ruta para agregar un servicio al presupuesto (POST)
+//  agregar un servicio 
 app.post('/carrito', function (req, res) {
     const data = req.body;
     const item = {
@@ -29,7 +26,6 @@ app.post('/carrito', function (req, res) {
     res.status(201).json(item);
 });
 
-// Ruta para ver el total y los artículos (GET)
 app.get('/carrito/total', function (req, res) {
     let total = 0;
     for (let i = 0; i < carrito.length; i++) {
@@ -41,7 +37,7 @@ app.get('/carrito/total', function (req, res) {
     });
 });
 
-// Ruta para eliminar un servicio por su ID (DELETE)
+// eliminar 
 app.delete('/carrito/:id_item', function (req, res) {
     const idBuscar = parseInt(req.params.id_item);
     let carritoFiltrado = [];
@@ -54,7 +50,7 @@ app.delete('/carrito/:id_item', function (req, res) {
     res.status(200).json({ "res": "ok" });
 });
 
-// Levantamos el servidor en el puerto 5000
+// servidor 
 app.listen(5000, function () {
     console.log('Servidor activo en el puerto 5000');
 });
